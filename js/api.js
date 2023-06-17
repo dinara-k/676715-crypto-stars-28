@@ -1,4 +1,5 @@
 const BASE_URL = 'https://cryptostar.grading.pages.academy';
+// const BASE_URL = 'https://cryptostar.grading.pages.academy/404';
 const Route = {
   USER_GET_DATA: '/user',
   CONTRACTORS_GET_DATA: '/contractors',
