@@ -5,22 +5,13 @@ import {showAlert} from './util.js';
 import {showUserProfile, hideUserProfile} from './user.js';
 import {createLists} from './contractors.js';
 
+let userData;
+
 async function start () {
-  // рабочий вариант - объединенный
-  // try {
-  //   const userData = await userGetData();
-  //   // const userDataObject = JSON.parse(userData);
-  //   console.log(`userGetData: ${userData}`);
-  //   showUserProfile(userData);
-  //   const contractorsData = await contractorsGetData();
-  //   console.log(`contractorsData: ${contractorsData}`);
-  // } catch (err) {
-  //   // console.log
-  //   showAlert(err.message);
-  // }
 
   try {
-    const userData = await userGetData();
+    userData = await userGetData();
+    // const userData = await userGetData();
     // console.log(`userGetData: ${userData}`);
     showUserProfile(userData);
   } catch (err) {
@@ -29,10 +20,9 @@ async function start () {
 
   try {
     const contractorsData = await contractorsGetData();
-    console.log(`contractorsData: ${contractorsData}`);
+    // console.log(`contractorsData: ${contractorsData}`);
     createLists(contractorsData);
   } catch (err) {
-    // console.log
     showAlert(err.message);
   }
 }
@@ -48,3 +38,5 @@ start();
 //     openErrorMessage();
 //   }
 // });
+
+export {userData};
