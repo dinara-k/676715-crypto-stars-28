@@ -5,31 +5,31 @@ import {sendData} from './api.js';
 // const PAYMENT_SELECT_ERROR_TEXT = 'Не выбрана плaтёжная система';
 
 const body = document.querySelector('body');
-const modalBuyContainer = document.querySelector('.modal--buy');
-const modalBuyClose = modalBuyContainer.querySelector('.modal__close-btn');
-const modalBuyForm = document.querySelector('.modal-buy');
-const inputErrorText = modalBuyForm.querySelector('.custom-input__error');
-const formErrorBlock = modalBuyForm.querySelector('.modal__validation-message--error');
-const formSuccessBlock = modalBuyForm.querySelector('.modal__validation-message--success');
-const idField = modalBuyForm.querySelector('[name="contractorId"]');
-const rateField = modalBuyForm.querySelector('[name="exchangeRate"]');
-const sendingCurrencyField = modalBuyForm.querySelector('[name="sendingCurrency"]');
-const receivingCurrencyField = modalBuyForm.querySelector('[name="receivingCurrency"]');
-const contractorVerified = modalBuyForm.querySelector('.transaction-info__item--name svg');
-const contractorName = modalBuyForm.querySelector('.transaction-info__item--name').querySelector('.transaction-info__data span');
-const exchangeRateText = modalBuyForm.querySelector('.transaction-info__item--exchangerate').querySelector('.transaction-info__data');
-const contractorCashLimitText = modalBuyForm.querySelector('.transaction-info__item--cashlimit').querySelector('.transaction-info__data');
-const paymentField = modalBuyForm.querySelector('[name="sendingAmount"]');
-const receivingField = modalBuyForm.querySelector('[name="receivingAmount"]');
-const paymentExchangeAllButton = modalBuyForm.querySelector('.custom-input__payment').querySelector('.custom-input__btn');
-const receivingExchangeAllButton = modalBuyForm.querySelector('.custom-input__receiving').querySelector('.custom-input__btn');
-const paymentSelect = modalBuyForm.querySelector('[name="paymentMethod"]');
-const paymentSelectItems = modalBuyForm.querySelectorAll('[name="paymentMethod"] option');
+const modalSellContainer = document.querySelector('.modal--sell');
+const modalSellClose = modalSellContainer.querySelector('.modal__close-btn');
+const modalSellForm = document.querySelector('.modal-sell');
+const inputErrorText = modalSellForm.querySelector('.custom-input__error');
+const formErrorBlock = modalSellForm.querySelector('.modal__validation-message--error');
+const formSuccessBlock = modalSellForm.querySelector('.modal__validation-message--success');
+const idField = modalSellForm.querySelector('[name="contractorId"]');
+const rateField = modalSellForm.querySelector('[name="exchangeRate"]');
+const sendingCurrencyField = modalSellForm.querySelector('[name="sendingCurrency"]');
+const receivingCurrencyField = modalSellForm.querySelector('[name="receivingCurrency"]');
+const contractorVerified = modalSellForm.querySelector('.transaction-info__item--name svg');
+const contractorName = modalSellForm.querySelector('.transaction-info__item--name').querySelector('.transaction-info__data span');
+const exchangeRateText = modalSellForm.querySelector('.transaction-info__item--exchangerate').querySelector('.transaction-info__data');
+const contractorCashLimitText = modalSellForm.querySelector('.transaction-info__item--cashlimit').querySelector('.transaction-info__data');
+const paymentField = modalSellForm.querySelector('[name="sendingAmount"]');
+const receivingField = modalSellForm.querySelector('[name="receivingAmount"]');
+const paymentExchangeAllButton = modalSellForm.querySelector('.custom-input__payment').querySelector('.custom-input__btn');
+const receivingExchangeAllButton = modalSellForm.querySelector('.custom-input__receiving').querySelector('.custom-input__btn');
+const paymentSelect = modalSellForm.querySelector('[name="paymentMethod"]');
+const paymentSelectItems = modalSellForm.querySelectorAll('[name="paymentMethod"] option');
 const paymentListFragment = document.createDocumentFragment();
-const numberCardField = modalBuyForm.querySelector('.custom-input__number-card [type="number"]');
-const userWalletField = modalBuyForm.querySelector('.custom-input__address-wallet [type="number"]');
-const passwordField = modalBuyForm.querySelector('.custom-input__password [type="password"]');
-const modalBuySubmitButton = modalBuyForm.querySelectorAll('.modal__submit');
+const numberCardField = modalSellForm.querySelector('.custom-input__number-card [type="number"]');
+const userWalletField = modalSellForm.querySelector('.custom-input__address-wallet [type="number"]');
+const passwordField = modalSellForm.querySelector('.custom-input__password [type="password"]');
+const modalSellSubmitButton = modalSellForm.querySelectorAll('.modal__submit');
 
 const firstItemPaymentSelect = paymentSelect[0];
 
@@ -43,7 +43,7 @@ let paymentMaxAmount;
 let receivingMinAmount;
 let receivingMaxAmount;
 
-// Модалка "Покупка" - установка данных продавца
+// Модалка "Продажа" - установка данных покупателя
 const setContractorData = ({id, isVerified, userName, exchangeRate, minAmount, balance, paymentMethods}) => {
   idField.value = id;
   rateField.value = exchangeRate;
@@ -72,7 +72,7 @@ const setContractorData = ({id, isVerified, userName, exchangeRate, minAmount, b
   paymentSelect.appendChild(paymentListFragment);
 };
 
-// Модалка "Покупка" - установка данных пользователя
+// Модалка "Продажа" - установка данных пользователя
 const setUserData = ({wallet, paymentMethods}) => {
   let numberCard;
   paymentMethods.forEach(({accountNumber}) => {
@@ -97,7 +97,7 @@ const setUserData = ({wallet, paymentMethods}) => {
 };
 
 // Pristine - подключение
-const pristine = new Pristine(modalBuyForm, {
+const pristine = new Pristine(modalSellForm, {
   classTo: 'custom-input',
   errorTextParent: 'custom-input',
   errorTextTag: 'div',
@@ -118,7 +118,7 @@ const pristine = new Pristine(modalBuyForm, {
 // // ошибка заполнения данных
 // pristine.addValidator(paymentSelect, validatepaymentSelect, showErrorMessage);
 
-// -------- // Модалка "Покупка" - функция обмена из рублей в Кексы и подстановка значений c toFixed(2) у всех значений ------
+// -------- // Модалка "Продажа" - функция обмена из рублей в Кексы и подстановка значений c toFixed(2) у всех значений ------
 const checkExchangeRubInKeks = (sellerData, buyerData) => {
   const {exchangeRate, minAmount, balance} = sellerData;
   const {balances} = buyerData;
@@ -166,7 +166,7 @@ const checkExchangeRubInKeks = (sellerData, buyerData) => {
   }
 
   // рабочий вариант - paymentExchangeAllButton.addEventListener в paymentField.oninput
-  // Модалка "Покупка" - проверка инпута "Оплата"
+  // Модалка "Продажа" - проверка инпута "Оплата"
   // paymentField.oninput = function () {
   //   // console.log('ввели данные в поле Оплата - oninput');
   //   exchangeRubInKeks();
@@ -242,7 +242,7 @@ const checkExchangeRubInKeks = (sellerData, buyerData) => {
 
   pristine.addValidator(paymentField, validatePaymentField, getValidatePaymentMessage);
 
-  // Модалка "Покупка" - проверка инпута "Зачисление"
+  // Модалка "Продажа" - проверка инпута "Зачисление"
   receivingField.oninput = function () {
     // console.log('ввели данные в поле Зачисление - oninput');
     // exchangeKeksInRub();
@@ -283,8 +283,8 @@ const checkExchangeRubInKeks = (sellerData, buyerData) => {
   pristine.addValidator(receivingField, validateReceivingField, getValidateReceivingMessage);
 };
 
-// Модалка "Покупка" - заполнение всех данных
-const setDataModalBuy = (contractorData) => {
+// Модалка "Продажа" - заполнение всех данных
+const setDataModalSell = (contractorData) => {
   // exchangeAllButtons.forEach((button) => {
   //   button.style.display = 'none';
   // });
@@ -301,11 +301,11 @@ const setDataModalBuy = (contractorData) => {
   checkExchangeRubInKeks(contractorData, userData);
 };
 
-// Модалка "Покупка" - открытие модалки
-const openModalBuy = (element) => {
+// Модалка "Продажа" - открытие модалки
+const openModalSell = (element) => {
   // debugger;
   body.classList.add('scroll-lock');
-  modalBuyContainer.style.display = 'block';
+  modalSellContainer.style.display = 'block';
   paymentExchangeAllButton.style.display = 'none';
   receivingExchangeAllButton.style.display = 'none';
   inputErrorText.style.display = 'none';
@@ -315,14 +315,14 @@ const openModalBuy = (element) => {
   hideSuccessMessage();
   passwordField.value = '';
 
-  setDataModalBuy(element);
+  setDataModalSell(element);
 
   document.addEventListener('keydown', onDocumentKeydown);
   // !!! включить после окончания проверки
-  modalBuyContainer.addEventListener('click', onClickOutside);
+  modalSellContainer.addEventListener('click', onClickOutside);
 };
 
-// modalBuyForm.addEventListener('submit', (evt) => {
+// modalSellForm.addEventListener('submit', (evt) => {
 //   evt.preventDefault();
 //   const isValid = pristine.validate();
 //   if (isValid) {
@@ -334,25 +334,25 @@ const openModalBuy = (element) => {
 
 // Кнопка отправки формы
 const blockSubmitButton = () => {
-  modalBuySubmitButton.disabled = true;
-  modalBuySubmitButton.textContent = SubmitButtonText.SENDING;
+  modalSellSubmitButton.disabled = true;
+  modalSellSubmitButton.textContent = SubmitButtonText.SENDING;
 };
 
 const unblockSubmitButton = () => {
-  modalBuySubmitButton.disabled = false;
-  modalBuySubmitButton.textContent = SubmitButtonText.IDLE;
+  modalSellSubmitButton.disabled = false;
+  modalSellSubmitButton.textContent = SubmitButtonText.IDLE;
 };
 
 // Отправка формы
 const setOnFormSubmit = (onSuccess) => {
-  modalBuyForm.addEventListener('submit', async (evt) => {
+  modalSellForm.addEventListener('submit', async (evt) => {
     evt.preventDefault();
 
     const isValid = pristine.validate();
 
     if (isValid) {
       blockSubmitButton();
-      await onSuccess(new FormData(modalBuyForm));
+      await onSuccess(new FormData(modalSellForm));
       unblockSubmitButton();
       showSuccessMessage();
     } else {
@@ -377,10 +377,10 @@ setOnFormSubmit(async (data) => {
 const closeModalBuy = () => {
   resetForm();
   body.classList.remove('scroll-lock');
-  modalBuyContainer.style.display = 'none';
+  modalSellContainer.style.display = 'none';
   contractorVerified.style.display = 'block';
   document.removeEventListener('keydown', onDocumentKeydown);
-  modalBuyContainer.removeEventListener('click', onClickOutside);
+  modalSellContainer.removeEventListener('click', onClickOutside);
 };
 
 function onDocumentKeydown (evt) {
@@ -395,7 +395,7 @@ function onClickOutside (evt) {
   if (!isEvent) {
     closeModalBuy();
     document.removeEventListener('keydown', onDocumentKeydown);
-    modalBuyContainer.removeEventListener('click', onClickOutside);
+    modalSellContainer.removeEventListener('click', onClickOutside);
   }
 }
 
@@ -416,19 +416,19 @@ function hideErrorMessage() {
 }
 
 function resetForm () {
-  modalBuyForm.reset();
+  modalSellForm.reset();
   paymentField.value = '';
   receivingField.value = '';
   pristine.reset();
 }
 
-modalBuyClose.addEventListener('click', () => {
+modalSellClose.addEventListener('click', () => {
   closeModalBuy();
 });
 
-export {openModalBuy};
+export {openModalSell};
 
-// // Модалка "Покупка" - функция обмена из рублей в Кексы и подстановка значений без toFixed почти у всех значений и с округлением exchangeRate
+// // Модалка "Продажа" - функция обмена из рублей в Кексы и подстановка значений без toFixed почти у всех значений и с округлением exchangeRate
 // const checkExchangeRubInKeks = (sellerData, buyerData) => {
 //   const {exchangeRate, minAmount, balance} = sellerData;
 //   const {balances} = buyerData;
@@ -480,7 +480,7 @@ export {openModalBuy};
 //   }
 
 //   // рабочий вариант - paymentExchangeAllButton.addEventListener в paymentField.oninput
-//   // Модалка "Покупка" - проверка инпута "Оплата"
+//   // Модалка "Продажа" - проверка инпута "Оплата"
 //   // paymentField.oninput = function () {
 //   //   // console.log('ввели данные в поле Оплата - oninput');
 //   //   exchangeRubInKeks();
@@ -557,7 +557,7 @@ export {openModalBuy};
 
 //   pristine.addValidator(paymentField, validatePaymentField, getValidatePaymentMessage);
 
-//   // Модалка "Покупка" - проверка инпута "Зачисление"
+//   // Модалка "Продажа" - проверка инпута "Зачисление"
 //   receivingField.oninput = function () {
 //     // console.log('ввели данные в поле Зачисление - oninput');
 //     // exchangeKeksInRub();

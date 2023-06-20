@@ -95,140 +95,157 @@
 //   tableBodyContainer.appendChild(contractorsFragment);
 // };
 
-import {openModalBuy} from './modal-buy.js';
+// import {openModalBuy} from './modal-buy.js';
 // import {openModalSell} from './modal-sell.js';
+import {renderSellers} from './render-sellers.js';
+import {renderBuyers} from './render-buyers.js';
+
+// const LIST_CONTENTS = [
+//   {
+//     id: 'list-sellers',
+//     function: 'renderSellers'
+//   },
+//   {
+//     id: 'list-buyers',
+//     function: 'renderBuyers'
+//   }
+// ];
 
 // const usersTable = document.querySelector('.users-list__table');
+const buySellTabsContainer = document.querySelector('.tabs--toggle-buy-sell');
+const buySellTabsButtons = buySellTabsContainer.querySelectorAll('.tabs__control');
+const tableBodyContainer = document.querySelector('.users-list__table-body');
 
-const renderSellersTableRows = (array) => {
-  const tableBodyContainer = document.querySelector('.users-list__table-body');
-  const tableRowTemplate = document.querySelector('#user-table-row__template').content.querySelector('.users-list__table-row');
-  const contractorsFragment = document.createDocumentFragment();
+// const renderSellersTableRows = (array) => {
+//   const tableBodyContainer = document.querySelector('.users-list__table-body');
+//   const tableRowTemplate = document.querySelector('#user-table-row__template').content.querySelector('.users-list__table-row');
+//   const contractorsFragment = document.createDocumentFragment();
 
-  array.forEach(({id, isVerified, userName, exchangeRate, minAmount, balance, paymentMethods}) => {
-    const contractor = tableRowTemplate.cloneNode(true);
-    const contractorVerified = contractor.querySelector('.users-list__table-name svg');
-    const contractorName = contractor.querySelector('.users-list__table-name span');
-    const contractorExchangeRate = contractor.querySelector('.users-list__table-exchangerate');
-    const contractorCashLimit = contractor.querySelector('.users-list__table-cashlimit');
-    const contractorPaymentList = contractor.querySelector('.users-list__badges-list');
-    const contractorPaymentItem = contractorPaymentList.querySelector('.users-list__badges-item');
-    const paymentListFragment = document.createDocumentFragment();
+//   array.forEach(({id, isVerified, userName, exchangeRate, minAmount, balance, paymentMethods}) => {
+//     const contractor = tableRowTemplate.cloneNode(true);
+//     const contractorVerified = contractor.querySelector('.users-list__table-name svg');
+//     const contractorName = contractor.querySelector('.users-list__table-name span');
+//     const contractorExchangeRate = contractor.querySelector('.users-list__table-exchangerate');
+//     const contractorCashLimit = contractor.querySelector('.users-list__table-cashlimit');
+//     const contractorPaymentList = contractor.querySelector('.users-list__badges-list');
+//     const contractorPaymentItem = contractorPaymentList.querySelector('.users-list__badges-item');
+//     const paymentListFragment = document.createDocumentFragment();
 
-    if (!isVerified) {
-      console.log(isVerified);
-      contractorVerified.remove();
-    }
-    contractorName.textContent = userName;
-    console.log(userName);
+//     if (!isVerified) {
+//       console.log(isVerified);
+//       contractorVerified.remove();
+//     }
+//     contractorName.textContent = userName;
+//     console.log(userName);
 
-    contractorExchangeRate.textContent = `${exchangeRate.toFixed(2)} ₽`;
-    // contractorExchangeRate.textContent = `${exchangeRate} ₽`;
-    console.log(exchangeRate);
+//     contractorExchangeRate.textContent = `${exchangeRate.toFixed(2)} ₽`;
+//     // contractorExchangeRate.textContent = `${exchangeRate} ₽`;
+//     console.log(exchangeRate);
 
-    console.log(`minAmount в Р: ${minAmount}`);
-    // console.log(`minAmount в KEKS: ${minAmount * exchangeRate}`);
-    console.log(`balance.amount в KEKS: ${balance.amount}`);
-    console.log(`balance.amount в Р: ${balance.amount * exchangeRate}`);
-    // contractorCashLimit.textContent = `${(minAmount * exchangeRate).toFixed(2)} KEKS - ${(balance.amount * exchangeRate).toFixed(2)} KEKS`;
-    // contractorCashLimit.textContent = `${minAmount} ₽ - ${(balance.amount * exchangeRate).toFixed(2)} ₽`;
-    contractorCashLimit.textContent = `${minAmount} ₽ - ${(balance.amount * exchangeRate).toFixed(2)} ₽`;
+//     console.log(`minAmount в Р: ${minAmount}`);
+//     // console.log(`minAmount в KEKS: ${minAmount * exchangeRate}`);
+//     console.log(`balance.amount в KEKS: ${balance.amount}`);
+//     console.log(`balance.amount в Р: ${balance.amount * exchangeRate}`);
+//     // contractorCashLimit.textContent = `${(minAmount * exchangeRate).toFixed(2)} KEKS - ${(balance.amount * exchangeRate).toFixed(2)} KEKS`;
+//     // contractorCashLimit.textContent = `${minAmount} ₽ - ${(balance.amount * exchangeRate).toFixed(2)} ₽`;
+//     contractorCashLimit.textContent = `${minAmount} ₽ - ${(balance.amount * exchangeRate).toFixed(2)} ₽`;
 
-    paymentMethods.forEach(({provider}) => {
-      const paymentItemTemplate = contractorPaymentItem.cloneNode(true);
-      paymentItemTemplate.textContent = provider;
-      console.log(provider);
-      paymentListFragment.appendChild(paymentItemTemplate);
-    });
-    contractorPaymentList.innerHTML = '';
-    contractorPaymentList.appendChild(paymentListFragment);
-    // }
-    contractor.dataset.contractorId = id;
-    console.log(`id: ${id}`);
+//     paymentMethods.forEach(({provider}) => {
+//       const paymentItemTemplate = contractorPaymentItem.cloneNode(true);
+//       paymentItemTemplate.textContent = provider;
+//       console.log(provider);
+//       paymentListFragment.appendChild(paymentItemTemplate);
+//     });
+//     contractorPaymentList.innerHTML = '';
+//     contractorPaymentList.appendChild(paymentListFragment);
+//     // }
+//     contractor.dataset.contractorId = id;
+//     console.log(`id: ${id}`);
 
-    contractorsFragment.appendChild(contractor);
-  });
-  tableBodyContainer.appendChild(contractorsFragment);
-};
+//     contractorsFragment.appendChild(contractor);
+//   });
+//   tableBodyContainer.appendChild(contractorsFragment);
+// };
 
-const renderSellers = (data) => {
-  renderSellersTableRows(data);
-  // const usersTable = document.querySelector('.users-list__table');
-  // const exchangeBuyButtons = usersTable.querySelectorAll('.btn--greenborder');
-  const sellersTable = document.querySelector('.users-list__table');
-  const exchangeBuyButtons = sellersTable.querySelectorAll('.btn--greenborder');
+// const renderSellers = (data) => {
+//   renderSellersTableRows(data);
+//   // const usersTable = document.querySelector('.users-list__table');
+//   // const exchangeBuyButtons = usersTable.querySelectorAll('.btn--greenborder');
+//   const sellersTable = document.querySelector('.users-list__table');
+//   const exchangeBuyButtons = sellersTable.querySelectorAll('.btn--greenborder');
 
-  // отслеживание клика на кнопку "Обменять"
-  exchangeBuyButtons.forEach((button) => {
-    button.addEventListener('click', (evt) => {
-      const elementId = evt.target.closest('[data-contractor-id]');
-      evt.preventDefault();
-      const element = data.find((item) => item.id === elementId.dataset.contractorId);
-      // console.log(`element: ${element}, elementID: ${element.id}`);
-      openModalBuy(element);
-    });
-  });
-};
-const renderBuyersTableRows = (array) => {
-  const tableBodyContainer = document.querySelector('.users-list__table-body');
-  const tableRowTemplate = document.querySelector('#user-table-row__template').content.querySelector('.users-list__table-row');
-  const contractorsFragment = document.createDocumentFragment();
+//   // отслеживание клика на кнопку "Обменять"
+//   exchangeBuyButtons.forEach((button) => {
+//     button.addEventListener('click', (evt) => {
+//       const elementId = evt.target.closest('[data-contractor-id]');
+//       evt.preventDefault();
+//       const element = data.find((item) => item.id === elementId.dataset.contractorId);
+//       // console.log(`element: ${element}, elementID: ${element.id}`);
+//       openModalBuy(element);
+//     });
+//   });
+// };
 
-  console.log('ПОКУПАТЕЛИ:');
-  array.forEach(({id, isVerified, userName, exchangeRate, minAmount, balance}) => {
-    const contractor = tableRowTemplate.cloneNode(true);
-    const contractorVerified = contractor.querySelector('.users-list__table-name svg');
-    const contractorName = contractor.querySelector('.users-list__table-name span');
-    const contractorExchangeRate = contractor.querySelector('.users-list__table-exchangerate');
-    const contractorCashLimit = contractor.querySelector('.users-list__table-cashlimit');
-    const contractorPaymentList = contractor.querySelector('.users-list__badges-list');
+// const renderBuyersTableRows = (array) => {
+//   const tableBodyContainer = document.querySelector('.users-list__table-body');
+//   const tableRowTemplate = document.querySelector('#user-table-row__template').content.querySelector('.users-list__table-row');
+//   const contractorsFragment = document.createDocumentFragment();
 
-    if (!isVerified) {
-      console.log(isVerified);
-      // contractorVerified.remove();
-      contractorVerified.style.display = 'none';
-    }
-    contractorName.textContent = userName;
-    console.log(userName);
+//   console.log('ПОКУПАТЕЛИ:');
+//   array.forEach(({id, isVerified, userName, exchangeRate, minAmount, balance}) => {
+//     const contractor = tableRowTemplate.cloneNode(true);
+//     const contractorVerified = contractor.querySelector('.users-list__table-name svg');
+//     const contractorName = contractor.querySelector('.users-list__table-name span');
+//     const contractorExchangeRate = contractor.querySelector('.users-list__table-exchangerate');
+//     const contractorCashLimit = contractor.querySelector('.users-list__table-cashlimit');
+//     const contractorPaymentList = contractor.querySelector('.users-list__badges-list');
 
-    contractorExchangeRate.textContent = `${exchangeRate.toFixed(2)} ₽`;
-    console.log(exchangeRate);
+//     if (!isVerified) {
+//       console.log(isVerified);
+//       // contractorVerified.remove();
+//       contractorVerified.style.display = 'none';
+//     }
+//     contractorName.textContent = userName;
+//     console.log(userName);
 
-    console.log(`minAmount в Р: ${minAmount}`);
-    console.log(`minAmount в KEKS: ${(minAmount / exchangeRate).toFixed(2)}`);
-    console.log(`balance.amount в Р: ${balance.amount}`);
-    console.log(`balance в KEKS: ${(balance.amount / exchangeRate).toFixed(2)}`);
-    contractorCashLimit.textContent = `${(minAmount / exchangeRate).toFixed(2)} KEKS - ${(balance.amount / exchangeRate).toFixed(2)} KEKS`;
-    contractorPaymentList.innerHTML = '';
+//     contractorExchangeRate.textContent = `${exchangeRate.toFixed(2)} ₽`;
+//     console.log(exchangeRate);
 
-    contractor.dataset.buyerId = id;
-    console.log(`id: ${id}`);
+//     console.log(`minAmount в Р: ${minAmount}`);
+//     console.log(`minAmount в KEKS: ${(minAmount / exchangeRate).toFixed(2)}`);
+//     console.log(`balance.amount в Р: ${balance.amount}`);
+//     console.log(`balance в KEKS: ${(balance.amount / exchangeRate).toFixed(2)}`);
+//     contractorCashLimit.textContent = `${(minAmount / exchangeRate).toFixed(2)} KEKS - ${(balance.amount / exchangeRate).toFixed(2)} KEKS`;
+//     contractorPaymentList.innerHTML = '';
 
-    contractorsFragment.appendChild(contractor);
-  });
-  tableBodyContainer.appendChild(contractorsFragment);
-};
+//     contractor.dataset.buyerId = id;
+//     console.log(`id: ${id}`);
 
-const renderBuyers = (data) => {
-  renderBuyersTableRows(data);
-  // const usersTable = document.querySelector('.users-list__table');
-  // const exchangeSellButtons = usersTable.querySelectorAll('.btn--greenborder');
+//     contractorsFragment.appendChild(contractor);
+//   });
+//   tableBodyContainer.appendChild(contractorsFragment);
+// };
 
-  // временно закомментированны строки из-за возможных конфликтов
-  // const buyersTable = document.querySelector('.users-list__table');
-  // const exchangeSellButtons = buyersTable.querySelectorAll('.btn--greenborder');
+// const renderBuyers = (data) => {
+//   renderBuyersTableRows(data);
+//   // const usersTable = document.querySelector('.users-list__table');
+//   // const exchangeSellButtons = usersTable.querySelectorAll('.btn--greenborder');
 
-  // отслеживание клика на кнопку "Обменять"
-  // exchangeSellButtons.forEach((button) => {
-  //   button.addEventListener('click', (evt) => {
-  //     const elementId = evt.target.closest('[data-contractor-id]');
-  //     evt.preventDefault();
-  //     const element = data.find((item) => item.id === elementId.dataset.contractorId);
-  //     console.log(`element: ${element}, elementID: ${element.id}`);
-  //     openModalSell(element);
-  //   });
-  // });
-};
+//   // временно закомментированны строки из-за возможных конфликтов
+//   // const buyersTable = document.querySelector('.users-list__table');
+//   // const exchangeSellButtons = buyersTable.querySelectorAll('.btn--greenborder');
+
+//   // отслеживание клика на кнопку "Обменять"
+//   // exchangeSellButtons.forEach((button) => {
+//   //   button.addEventListener('click', (evt) => {
+//   //     const elementId = evt.target.closest('[data-contractor-id]');
+//   //     evt.preventDefault();
+//   //     const element = data.find((item) => item.id === elementId.dataset.contractorId);
+//   //     console.log(`element: ${element}, elementID: ${element.id}`);
+//   //     openModalSell(element);
+//   //   });
+//   // });
+// };
 
 const createLists = (data) => {
   const sellers = data.filter((seller) => seller.status === 'seller');
@@ -237,8 +254,38 @@ const createLists = (data) => {
   const buyers = data.filter((buyer) => buyer.status === 'buyer');
   // console.log(`buyers.length: ${buyers.length}, buyers: ${buyers}`);
 
+  // function activatebuySellTabs () {
+  //   buySellTabsButtons.forEach((button) => button.classList.toggle('is-active'));
+  // }
+
   renderSellers(sellers);
-  renderBuyers(buyers);
+
+  buySellTabsContainer.onclick = (evt) => {
+    const id = evt.target.dataset.id;
+
+    if (id) {
+      buySellTabsButtons.forEach((button) => {
+        button.classList.remove('is-active');
+      });
+      evt.target.classList.add('is-active');
+    }
+    // for (let i = 0; i < buySellTabsButtons.length; i++) {
+
+    // }
+    if (id === 'list-sellers') {
+      tableBodyContainer.innerHTML = '';
+      renderSellers(sellers);
+    } else if (id === 'list-buyers') {
+      tableBodyContainer.innerHTML = '';
+      renderBuyers(buyers);
+    }
+    // const element = document.getElementById(id);
+    // element.classList.add('is-active');
+  };
+
+  // ! здесь
+  // renderSellers(sellers);
+  // renderBuyers(buyers);
 };
 
 export {createLists};
