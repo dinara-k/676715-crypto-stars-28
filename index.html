@@ -191,9 +191,8 @@
                             <div class="tabs__controls" data-tabs="controls">
                                 <!-- При переключении с продавцов на покупателей и обратно нужно выделить активный пункт .is-active -->
                                 <!-- <button class="tabs__control btn" type="button" -->
-                                <button class="tabs__control btn is-active" type="button"
-                                    data-tabs="control">Купить</button>
-                                <button class="tabs__control btn" type="button" data-tabs="control">Продать</button>
+                                <button class="tabs__control btn is-active" type="button" data-tabs="control" data-id="list-sellers">Купить</button>
+                                <button class="tabs__control btn" type="button" data-tabs="control" data-id="list-buyers">Продать</button>
                                 <!-- <button class="tabs__control btn is-active" type="button" data-tabs="control">Продать</button> -->
                             </div>
                         </div>
@@ -210,8 +209,7 @@
                             data-delay="300">
                             <!-- При переключении с карты на список и обратно нужно выделить активный пункт .is-active -->
                             <div class="tabs__controls" data-tabs="controls">
-                                <button class="tabs__control btn is-active" type="button"
-                                    data-tabs="control">Cписок</button>
+                                <button class="tabs__control btn is-active" type="button" data-tabs="control">Cписок</button>
                                 <button class="tabs__control btn" type="button" data-tabs="control">Карта</button>
                             </div>
                         </div>
@@ -372,8 +370,8 @@
                                     которые есть у пользователя. Способ - удалить из разметки или добавить disable-атрибут
                                     остаётся на ваше усмотрение. Первый пункт, с предложением выбора, должен быть всегда
                                 -->
-                                <select name="paymentMethod" data-pristine-required-message="Обязательное поле" required>
-                                <!-- <select name="paymentMethod"> -->
+                                <!-- <select name="paymentMethod" data-pristine-required-message="Обязательное поле" required> -->
+                                <select name="paymentMethod">
                                     <option selected disabled>Выберите платёжную систему</option>
                                     <option>CryptoEx</option>
                                     <option>Первый криптобанк</option>
@@ -387,7 +385,7 @@
                                 <!-- В случае, если выбрана оплата наличными, поле нужно оставить пустым -->
                                 <label class="custom-input__number-card">
                                     <span class="custom-input__label">Номер банковской карты пользователя</span>
-                                        <input type="number" placeholder="1234 5678 9012 3456" disabled>
+                                    <input type="number" placeholder="1234 5678 9012 3456" disabled>
                                 </label>
                             </div>
                         </div>
@@ -395,7 +393,7 @@
                             <div class="custom-input">
                                 <label class="custom-input__address-wallet">
                                     <span class="custom-input__label">Номер криптокошелька пользователя</span>
-                                        <input type="number" placeholder="08701943851-9832345" disabled>
+                                    <input type="number" placeholder="08701943851-9832345" disabled>
                                 </label>
                             </div>
                         </div>
@@ -484,7 +482,7 @@
                                     <span class="custom-input__label">Оплата</span>
                                     <span class="custom-input__unit">KEKS</span>
                                     <button class="btn btn--textblue custom-input__btn" type="button">обменять все</button>
-                                    <input type="number" value="" placeholder="0">
+                                    <input type="number" value="" placeholder="0" data-pristine-required-message="Обязательное поле" required>
                                 </label>
                                 <div class="custom-input__error">Минимальная сумма — 9 999 999 ₽</div>
                             </div>
@@ -494,11 +492,11 @@
                         </svg>
                         <div class="modal__input-wrapper modal__input-wrapper--min">
                             <div class="custom-input">
-                                <label>
+                                <label class="custom-input__receiving">
                                     <span class="custom-input__label">Зачисление</span>
                                     <span class="custom-input__unit">₽</span>
                                     <button class="btn btn--textblue custom-input__btn" type="button">обменять все</button>
-                                    <input type="number" value="" placeholder="0">
+                                    <input type="number" value="" placeholder="0" data-pristine-required-message="Обязательное поле" required>
                                 </label>
                             </div>
                         </div>
@@ -506,9 +504,9 @@
                     <div class="modal__container">
                         <div class="modal__input-wrapper modal__input-wrapper--decorated">
                             <div class="custom-input">
-                                <label>
+                                <label class="custom-input__address-wallet">
                                     <span class="custom-input__label">Номер криптокошелька пользователя</span>
-                                        <input type="number" placeholder="08701943851-983457-2345" disabled>
+                                    <input type="number" placeholder="08701943851-983457-2345" disabled>
                                 </label>
                             </div>
                         </div>
@@ -520,8 +518,8 @@
                                     которые есть у пользователя. Способ - удалить из разметки или добавить disable-атрибут
                                     остаётся на ваше усмотрение. Первый пункт, с предложением выбора, должен быть всегда
                                 -->
-                                <select name="paymentMethod" data-pristine-required-message="Обязательное поле" required>
-                                <!-- <select name="paymentMethod"> -->
+                                <!-- <select name="paymentMethod" data-pristine-required-message="Обязательное поле" required> -->
+                                <select name="paymentMethod">
                                     <!-- <option selected disabled>Выберите платёжную систему</option> -->
                                     <option selected disabled>Выберите платёжную систему</option>
                                     <option>CryptoEx</option>
@@ -534,22 +532,21 @@
                         <div class="modal__input-wrapper modal__input-wrapper--decorated">
                             <div class="custom-input">
                                 <!-- В случае, если выбрана оплата наличными, поле нужно оставить пустым -->
-                                <label>
+                                <label class="custom-input__number-card">
                                     <span class="custom-input__label">Номер банковской карты пользователя</span>
-                                        <input type="number" placeholder="1234 5678 9012 3456" disabled>
+                                    <input type="number" placeholder="1234 5678 9012 3456" disabled>
                                 </label>
                             </div>
                         </div>
                         <div class="modal__input-wrapper modal__input-wrapper--decorated">
                             <div class="custom-input">
-                                <label>
+                                <label class="custom-input__password">
                                     <span class="custom-input__label">Платёжный пароль</span>
-                                        <input type="password" placeholder="Введите пароль" data-pristine-required-message="Обязательное поле" required>
+                                    <input type="password" placeholder="Введите пароль" data-pristine-required-message="Обязательное поле" required>
                                 </label>
                             </div>
                         </div>
-                        <button class="btn btn--green modal__submit" type="submit">Обменять
-                        </button>
+                        <button class="btn btn--green modal__submit" type="submit">Обменять</button>
                         <!-- Сообщение, которое нужно показать в случае неудачной отправки данных -->
                         <p class="modal__validation-message modal__validation-message--error">
                             <svg width="20" height="20" aria-hidden="true">
