@@ -43,7 +43,7 @@ let paymentMaxAmount;
 let receivingMinAmount;
 let receivingMaxAmount;
 
-// Модалка "Продажа" - установка данных покупателя
+// Модалка "Покупка" - установка данных продавца
 const setContractorData = ({id, isVerified, userName, exchangeRate, minAmount, balance, paymentMethods}) => {
   idField.value = id;
   rateField.value = exchangeRate;
@@ -70,29 +70,118 @@ const setContractorData = ({id, isVerified, userName, exchangeRate, minAmount, b
   firstItemPaymentSelect.value = '';
   paymentSelect.appendChild(firstItemPaymentSelect);
   paymentSelect.appendChild(paymentListFragment);
-};
 
-// Модалка "Продажа" - установка данных пользователя
-const setUserData = ({wallet, paymentMethods}) => {
-  let numberCard;
-  paymentMethods.forEach(({accountNumber}) => {
-    numberCard = accountNumber;
-  });
-  if (!numberCard) {
-    numberCard = '';
-  }
-  numberCardField.placeholder = numberCard;
+  numberCardField.placeholder = '';
 
   // Функция выбора пунктов select-а "Плaтёжная система" и подстановки данных в поле "Номер банковской карты пользователя"
   paymentSelect.onchange = function () {
     if (paymentSelect.value === 'Cash in person') {
-      // console.log('Cash in person active');
       numberCardField.placeholder = '';
     } else {
-      numberCardField.placeholder = numberCard;
+      numberCardField.placeholder = getAccountNumber(paymentSelect.value);
+    }
+
+    function getAccountNumber (payment) {
+      let numberCard;
+      const element = paymentMethods.filter(({provider}) => provider === payment);
+      element.find(({provider, accountNumber}) => {
+        if (provider === payment) {
+          numberCard = accountNumber;
+        }
+      });
+      console.log(`numberCard: ${numberCard}`);
+      return numberCard;
     }
   };
+};
 
+// -----------вариант 1
+// // Модалка "Покупка" - установка данных пользователя
+// const setUserData = ({wallet, paymentMethods}) => {
+//   numberCardField.placeholder = '';
+
+//   // Функция выбора пунктов select-а "Плaтёжная система" и подстановки данных в поле "Номер банковской карты пользователя"
+//   paymentSelect.onchange = function () {
+//     if (paymentSelect.value === 'Cash in person') {
+//       // console.log('Cash in person active');
+//       numberCardField.placeholder = '';
+//     } else {
+//       // numberCardField.placeholder = numberCard;
+//       numberCardField.placeholder = getAccountNumber();
+//     }
+
+//     function getAccountNumber () {
+//       // paymentMethods.some(({provider, accountNumber}) => {
+//       //   // paymentMethods.forEach(({accountNumber}) => {
+//       //   // numberCard = accountNumber;
+//       //   // if (provider.value !== 'Cash in person') {
+//       //   //   numberCard = accountNumber;
+//       //   //   console.log(numberCard);
+//       //   // } else {
+//       //   //   numberCard = '';
+//       //   // }
+//       //   // if (provider.value !== 'Cash in person') {
+//       //     // if ((provider !== 'Cash in person') && (accountNumber)) {
+//       //   if (provider !== 'Cash in person') {
+//       //     console.log(`provider !== 'Cash in person': ${provider !== 'Cash in person'}`);
+//       //     numberCard = accountNumber;
+//       //     console.log(numberCard);
+//       //   }
+//       //   // if (accountNumber) {
+//       //   //   numberCard = accountNumber;
+//       //   //   console.log(numberCard);
+//       //   //   }
+//       //   // console.log(numberCard);
+//       // });
+
+//       // let numberCard;
+//       // for (let i = 0; i < paymentMethods.lenght; i++) {
+//       //   // const {provider, accountNumber} = paymentMethods[i];
+//       //   // if (provider !== 'Cash in person') {
+//       //   //   console.log(`provider !== 'Cash in person': ${provider !== 'Cash in person'}`);
+//       //   //   numberCard = accountNumber;
+//       //   //   console.log(`numberCard: ${numberCard}`);
+//       //   // } else {
+//       //   //   return;
+//       //   // }
+
+//       //   // const {provider, accountNumber} = paymentMethods[i];
+//       //   if (paymentMethods[i].provider !== 'Cash in person') {
+//       //     console.log(`provider !== 'Cash in person': ${paymentMethods[i].provider !== 'Cash in person'}`);
+//       //     numberCard = paymentMethods[i].accountNumber;
+//       //     console.log(`numberCard: ${numberCard}`);
+//       //   } else {
+//       //     return false;
+//       //   }
+//       // }
+//       const element = paymentMethods.filter(({provider}) => provider !== 'Cash in person');
+//       console.log(`element: ${element}`);
+
+//       // const paymentMethod = Object.values(element);
+//       // console.log(`paymentMethod: ${paymentMethod}`);
+
+//       // const {accountNumber} = paymentMethod;
+//       // console.log(`accountNumber: ${accountNumber}`);
+
+//       // const {accountNumber} = element;
+//       const accountNumber = element.accountNumber;
+//       console.log(`accountNumber: ${accountNumber}`);
+
+//       const numberCard = accountNumber;
+//       // const payment = paymentMethods.filter(({provider}) => provider !== 'Cash in person');
+//       // const numberCard = Object.values(payment);
+//       // console.log(`numberCard: ${numberCard.accountNumber}`);
+//       console.log(`numberCard: ${numberCard}`);
+//       return numberCard;
+//     }
+//   };
+
+//   userWalletField.placeholder = wallet.address;
+// };
+
+// Модалка "Покупка" - установка данных пользователя
+// const setUserData = ({wallet, paymentMethods}) => {
+const setUserData = ({wallet}) => {
   userWalletField.placeholder = wallet.address;
 };
 
@@ -104,48 +193,39 @@ const pristine = new Pristine(modalSellForm, {
   errorTextClass: 'custom-input__error'
 });
 
-// Pristine - функция валидации селекта "Плaтёжная система"
-// const validatepaymentSelect = () => {
-//   // let selectedOption = paymentSelect.options[paymentSelect.selectedIndex].value;
-//   const selectedOption = paymentSelect.options[paymentSelect.selectedIndex].value;
-//   console.log(`selectedOption: ${selectedOption}`);
-//   if (selectedOption === '') {
-//   // if (selectedOption.value === '0') {
-//     return false;
-//   }
-// };
-
-// // ошибка заполнения данных
-// pristine.addValidator(paymentSelect, validatepaymentSelect, showErrorMessage);
-
-// -------- // Модалка "Продажа" - функция обмена из рублей в Кексы и подстановка значений c toFixed(2) у всех значений ------
+// -------- // Модалка "Покупка" - функция обмена из рублей в Кексы и подстановка значений c toFixed(2) у всех значений ------
 const checkExchangeRubInKeks = (sellerData, buyerData) => {
   const {exchangeRate, minAmount, balance} = sellerData;
   const {balances} = buyerData;
-  const exchangeRateNumber = parseFloat(exchangeRate);
-  // console.log(`exchangeRateNumber type: ${typeof(exchangeRateNumber)}`);
+  // const exchangeRate = parseFloat(exchangeRate);
+  console.log(`exchangeRate type: ${typeof(exchangeRate)}`);
+  // console.log(`exchangeRate type: ${typeof(exchangeRate)}`);
 
-  const minAmountNumber = parseFloat(minAmount);
+  // const minAmountNumber = parseFloat(minAmount);
+  console.log(`minAmount type: ${typeof(minAmount)}`);
   // console.log(`minAmountNumber type: ${typeof(minAmountNumber)}`);
 
-  const balanceAmountNumber = parseFloat(balance.amount);
+  // const balanceAmountNumber = parseFloat(balance.amount);
+  console.log(`balance.amount type: ${typeof(balance.amount)}`);
   // console.log(`balanceAmountNumber type: ${typeof(balanceAmountNumber)}`);
 
+  // не работает Pristine
   // const paymentFieldNumber = parseFloat(paymentField.value);
   // const receivingFieldNumber = parseFloat(receivingField.value);
 
-  paymentMinAmount = minAmountNumber;
-  // console.log(`paymentMinAmount type: ${typeof(paymentMinAmount)}`);
+  paymentMinAmount = minAmount;
+  console.log(`paymentMinAmount type: ${typeof(paymentMinAmount)}`);
 
-  paymentMaxAmount = parseFloat((balanceAmountNumber * exchangeRateNumber).toFixed(2));
-  // console.log(`balanceAmountNumber type: ${typeof(balanceAmountNumber)}, exchangeRateNumber type: ${typeof(exchangeRateNumber)}, paymentMaxAmount type: ${typeof(paymentMaxAmount)}, paymentMaxAmount value: ${paymentMaxAmount}`);
-  // console.log(`paymentMaxAmount / 100: ${paymentMaxAmount / 100}`);
+  paymentMaxAmount = parseFloat((balance.amount * exchangeRate).toFixed(2));
+  // console.log(`balanceAmountNumber type: ${typeof(balanceAmountNumber)}, exchangeRate type: ${typeof(exchangeRate)}, paymentMaxAmount type: ${typeof(paymentMaxAmount)}, paymentMaxAmount value: ${paymentMaxAmount}`);
+  console.log(`paymentMaxAmount: type: ${typeof(paymentMaxAmount)}`);
 
-  receivingMinAmount = parseFloat((paymentMinAmount / exchangeRateNumber).toFixed(2));
-  // console.log(`paymentMinAmount type: ${typeof(paymentMinAmount)}, exchangeRateNumber type: ${typeof(exchangeRateNumber)}, receivingMinAmount type: ${typeof(receivingMinAmount)}`);
+  receivingMinAmount = parseFloat((paymentMinAmount / exchangeRate).toFixed(2));
+  console.log(`receivingMinAmount: type: ${typeof(receivingMinAmount)}`);
+  // console.log(`paymentMinAmount type: ${typeof(paymentMinAmount)}, exchangeRate type: ${typeof(exchangeRate)}, receivingMinAmount type: ${typeof(receivingMinAmount)}`);
 
-  receivingMaxAmount = balanceAmountNumber;
-  // console.log(`receivingMaxAmount type: ${typeof(receivingMaxAmount)}`);
+  receivingMaxAmount = balance.amount;
+  console.log(`receivingMaxAmount type: ${typeof(receivingMaxAmount)}`);
 
   let buyerRubBalance;
   let sellerKeksBalance;
@@ -155,18 +235,26 @@ const checkExchangeRubInKeks = (sellerData, buyerData) => {
 
   // Обмен из рублей в Кексы
   function exchangeRubInKeks () {
-    receivingField.value = parseFloat((parseFloat(paymentField.value) / exchangeRateNumber).toFixed(2));
+    // receivingField.value = parseFloat((paymentFieldNumber / exchangeRate).toFixed(2));
+    // рабочий вариант - последний
+    receivingField.value = parseFloat((parseFloat(paymentField.value) / exchangeRate).toFixed(2));
+
+    // console.log(`receivingField.value type: ${typeof(receivingField.value)}`);
+    // console.log(`receivingField.value type = parseFloat((parseFloat(paymentField.value) / exchangeRate).toFixed(2)): ${typeof(parseFloat((parseFloat(paymentField.value) / exchangeRate).toFixed(2)))}`);
     // receivingField.value = (paymentField.value / sellerData.exchangeRate).toFixed(2);
   }
 
   // Обмен из Кексов в рубли
   function exchangeKeksInRub () {
-    paymentField.value = parseFloat((parseFloat(receivingField.value) * exchangeRateNumber).toFixed(2));
-    // paymentField.value = (receivingField.value * sellerData.exchangeRate).toFixed(2);
+    // рабочий вариант - последний
+    paymentField.value = parseFloat((parseFloat(receivingField.value) * exchangeRate).toFixed(2));
+
+    // не работает
+    // paymentField.value = parseFloat((receivingFieldNumber * exchangeRate).toFixed(2));
   }
 
   // рабочий вариант - paymentExchangeAllButton.addEventListener в paymentField.oninput
-  // Модалка "Продажа" - проверка инпута "Оплата"
+  // Модалка "Покупка" - проверка инпута "Оплата"
   // paymentField.oninput = function () {
   //   // console.log('ввели данные в поле Оплата - oninput');
   //   exchangeRubInKeks();
@@ -184,42 +272,71 @@ const checkExchangeRubInKeks = (sellerData, buyerData) => {
   //   });
   // };
 
+  // const changePaymentField = () => {
+  //   // exchangeRubInKeks();
+  //   paymentExchangeAllButton.style.display = 'block';
+
+  //   paymentExchangeAllButton.addEventListener('click', () => {
+  //     balances.forEach(({currency, amount}) => {
+  //       if (currency === 'RUB') {
+  //         buyerRubBalance = amount;
+  //       }
+  //     });
+  //     paymentField.value = parseFloat((buyerRubBalance).toFixed(2));
+  //     // changereceivingField();
+  //     // заменить на changereceivingField(); ?
+  //     // exchangeRubInKeks();
+  //   });
+  //   exchangeRubInKeks();
+  // };
+
   paymentField.oninput = function () {
-    // paymentField.addEventListener('input', () => {
+  // changePaymentField();
+  // paymentField.addEventListener('input', () => {
     // console.log('ввели данные в поле Оплата - oninput');
+    exchangeRubInKeks();
     paymentExchangeAllButton.style.display = 'block';
 
     paymentExchangeAllButton.addEventListener('click', () => {
       // debugger;
       balances.forEach(({currency, amount}) => {
         if (currency === 'RUB') {
-          buyerRubBalance = amount;
-          // buyerRubBalance = parseFloat(amount.toFixed(2));
+          // buyerRubBalance = amount;
+          // console.log(`amount: ${typeof(amount)}`);
+          buyerRubBalance = parseFloat(amount.toFixed(2));
+          // console.log(`buyerRubBalance: ${typeof(parseFloat(amount.toFixed(2)))}`);
         }
       });
       // paymentFieldNumber = parseFloat((buyerRubBalance).toFixed(2));
       // paymentField.value = buyerRubBalance;
+
       paymentField.value = parseFloat((buyerRubBalance).toFixed(2));
-      // console.log(`значение paymentFieldNumber type после нажатия на "Обменять все": ${typeof(paymentFieldNumber)}`);
-      // exchangeRubInKeks();
+      // console.log(`значение paymentField.value после нажатия на "Обменять все": ${typeof(parseFloat((buyerRubBalance).toFixed(2)))}`);
+      exchangeRubInKeks();
+      // activateValidationPaymentField();
     });
     // if ((paymentMinAmount <= paymentFieldNumber) && (paymentFieldNumber <= paymentMaxAmount)) {
     //   exchangeRubInKeks();
     // }
-    exchangeRubInKeks();
+    // exchangeRubInKeks();
+    // activateValidationPaymentField();
   };
   // });
 
   // -- Pristine - функция валидации инпута "Оплата" вне paymentField.oninput
   // Pristine - функция валидации инпута "Оплата"
+  // const validatePaymentField = () => {
   const validatePaymentField = () => ((paymentMinAmount <= parseFloat(paymentField.value)) && (parseFloat(paymentField.value) <= paymentMaxAmount));
   // {
-  // debugger;
-  // console.log((paymentMinAmount <= paymentField.value) && (paymentField.value <= paymentMaxAmount));
-  // console.log(`(paymentMinAmount <= paymentField.value) && (paymentField.value <= paymentMaxAmount): ${(paymentMinAmount <= paymentField.value) && (paymentField.value <= paymentMaxAmount)}`);
-  // console.log(`paymentField.value type: ${typeof(paymentField.value)}`);
-  // return ((paymentMinAmount <= paymentFieldNumber) && (paymentFieldNumber <= paymentMaxAmount));
-  // console.log(`(paymentMinAmount <= paymentField.value) || (paymentField.value <= paymentMaxAmount): ${(paymentMinAmount <= paymentField.value) && (paymentField.value <= paymentMaxAmount)}`);
+
+    // return ((paymentMinAmount <= paymentFieldNumber) && (paymentFieldNumber <= paymentMaxAmount));
+    // console.log(`(paymentMinAmount <= parseFloat(paymentField.value)) && (parseFloat(paymentField.value) <= paymentMaxAmount): ${((paymentMinAmount <= parseFloat(paymentField.value)) && (parseFloat(paymentField.value) <= paymentMaxAmount))}`);
+    // return ((paymentMinAmount <= parseFloat(paymentField.value)) && (parseFloat(paymentField.value) <= paymentMaxAmount));
+
+    // console.log(`(paymentMinAmount <= paymentFieldNumber) && (paymentFieldNumber <= paymentMaxAmount): ${((paymentMinAmount <= paymentFieldNumber) && (paymentFieldNumber <= paymentMaxAmount))}`);
+    // return ((paymentMinAmount <= paymentFieldNumber) && (paymentFieldNumber <= paymentMaxAmount));
+
+
   // if (paymentMinAmount <= paymentField.value) {
   //   console.log(`paymentMinAmount: ${paymentMinAmount}, paymentField.value: ${paymentField.value}, paymentMinAmount <= paymentField.value: ${paymentMinAmount <= paymentField.value}`);
   //   return true;
@@ -228,9 +345,11 @@ const checkExchangeRubInKeks = (sellerData, buyerData) => {
   //   return true;
   // } else {
   //   return false;
+  // };
 
   // Pristine - отображение сообщения об ошибке
   const getValidatePaymentMessage = () => {
+    // рабочий вариант - последний
     if (parseFloat(paymentField.value) < paymentMinAmount) {
       // console.log(`paymentField.value: ${paymentFieldNumber}, paymentMinAmount: ${paymentMinAmount}, paymentField.value < paymentMinAmount: ${paymentFieldNumber < paymentMinAmount}`);
       return `Минимальная сумма - ${paymentMinAmount} ₽`;
@@ -238,40 +357,61 @@ const checkExchangeRubInKeks = (sellerData, buyerData) => {
       // console.log(`paymentField.value: ${paymentFieldNumber}, paymentMaxAmount: ${paymentMaxAmount}, paymentField.value > paymentMaxAmount: ${paymentFieldNumber > paymentMaxAmount}`);
       return `Максимальная сумма - ${paymentMaxAmount} ₽`;
     }
+
+
+    // не работает
+    // if (paymentFieldNumber < paymentMinAmount) {
+    //   // console.log(`paymentField.value: ${paymentFieldNumber}, paymentMinAmount: ${paymentMinAmount}, paymentField.value < paymentMinAmount: ${paymentFieldNumber < paymentMinAmount}`);
+    //   return `Минимальная сумма - ${paymentMinAmount} ₽`;
+    // } else if (paymentFieldNumber > paymentMaxAmount) {
+    //   // console.log(`paymentField.value: ${paymentFieldNumber}, paymentMaxAmount: ${paymentMaxAmount}, paymentField.value > paymentMaxAmount: ${paymentFieldNumber > paymentMaxAmount}`);
+    //   return `Максимальная сумма - ${paymentMaxAmount} ₽`;
+    // }
   };
 
   pristine.addValidator(paymentField, validatePaymentField, getValidatePaymentMessage);
 
-  // Модалка "Продажа" - проверка инпута "Зачисление"
+  // Модалка "Покупка" - проверка инпута "Зачисление"
   receivingField.oninput = function () {
     // console.log('ввели данные в поле Зачисление - oninput');
-    // exchangeKeksInRub();
+    exchangeKeksInRub();
     receivingExchangeAllButton.style.display = 'block';
 
     receivingExchangeAllButton.addEventListener('click', () => {
       if (balance.currency === 'KEKS') {
         // sellerKeksBalance = balance.amount;
         // sellerKeksBalance = balanceAmountNumber;
-        sellerKeksBalance = parseFloat(balanceAmountNumber.toFixed(2));
+        sellerKeksBalance = parseFloat((balance.amount).toFixed(2));
       }
       receivingField.value = sellerKeksBalance;
-      // exchangeKeksInRub();
+      exchangeKeksInRub();
     });
     // if ((receivingMinAmount <= paymentFieldNumber) && (paymentFieldNumber <= receivingMaxAmount)) {
     //   exchangeKeksInRub();
     // }
-    exchangeKeksInRub();
+
     // }
   };
 
   // Pristine - функция валидации инпута "Зачисление"
-  const validateReceivingField = () => ((receivingMinAmount <= parseFloat(receivingField.value)) && (parseFloat(receivingField.value) <= receivingMaxAmount));
+  //рабочи вариант - последнийй
+  // const validateReceivingField = () => ((receivingMinAmount <= parseFloat(receivingField.value)) && (parseFloat(receivingField.value) <= receivingMaxAmount));
+
+  const validateReceivingField = () =>
+  {
+    console.log((receivingMinAmount <= parseFloat(receivingField.value)) && (parseFloat(receivingField.value) <= receivingMaxAmount));
+    return ((receivingMinAmount <= parseFloat(receivingField.value)) && (parseFloat(receivingField.value) <= receivingMaxAmount));
+  };
+
+  //не работает
+  // const validateReceivingField = () =>
   // {
-  // console.log((receivingMinAmount <= receivingFieldNumber) && (receivingFieldNumber <= receivingMaxAmount));
-  // return ((receivingMinAmount <= receivingFieldNumber) && (receivingFieldNumber <= receivingMaxAmount));
+  //   console.log((receivingMinAmount <= receivingFieldNumber) && (receivingFieldNumber <= receivingMaxAmount));
+  //   return ((receivingMinAmount <= receivingFieldNumber) && (receivingFieldNumber <= receivingMaxAmount));
   // };
 
   // Pristine - отображение сообщения об ошибке в поле "Зачисление"
+  //рабочи вариант - последнийй
   const getValidateReceivingMessage = () => {
     if (parseFloat(receivingField.value) < receivingMinAmount) {
       return `Минимальная сумма - ${receivingMinAmount} KEKS`;
@@ -279,6 +419,15 @@ const checkExchangeRubInKeks = (sellerData, buyerData) => {
       return `Максимальная сумма - ${receivingMaxAmount} KEKS`;
     }
   };
+
+  // не работает
+  // const getValidateReceivingMessage = () => {
+  //   if (receivingFieldNumber < receivingMinAmount) {
+  //     return `Минимальная сумма - ${receivingMinAmount} KEKS`;
+  //   } else if (receivingFieldNumber > receivingMaxAmount) {
+  //     return `Максимальная сумма - ${receivingMaxAmount} KEKS`;
+  //   }
+  // };
 
   pristine.addValidator(receivingField, validateReceivingField, getValidateReceivingMessage);
 };
@@ -374,7 +523,7 @@ setOnFormSubmit(async (data) => {
   }
 });
 
-const closeModalBuy = () => {
+const closeModalSell = () => {
   resetForm();
   body.classList.remove('scroll-lock');
   modalSellContainer.style.display = 'none';
@@ -386,14 +535,14 @@ const closeModalBuy = () => {
 function onDocumentKeydown (evt) {
   if (isEscapeKey(evt)) {
     evt.stopPropagation();
-    closeModalBuy();
+    closeModalSell();
   }
 }
 
 function onClickOutside (evt) {
   const isEvent = evt.target.closest('.modal__content');
   if (!isEvent) {
-    closeModalBuy();
+    closeModalSell();
     document.removeEventListener('keydown', onDocumentKeydown);
     modalSellContainer.removeEventListener('click', onClickOutside);
   }
@@ -423,7 +572,7 @@ function resetForm () {
 }
 
 modalSellClose.addEventListener('click', () => {
-  closeModalBuy();
+  closeModalSell();
 });
 
 export {openModalSell};
