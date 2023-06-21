@@ -1,4 +1,4 @@
-import {openModalSell} from './modal-sell.js';
+// import {openModalSell} from './modal-sell.js';
 
 const renderBuyersTableRows = (array) => {
   const tableBodyContainer = document.querySelector('.users-list__table-body');
@@ -10,7 +10,7 @@ const renderBuyersTableRows = (array) => {
     const contractor = tableRowTemplate.cloneNode(true);
     const contractorVerified = contractor.querySelector('.users-list__table-name svg');
     const contractorName = contractor.querySelector('.users-list__table-name span');
-    const exchangeRateName = contractor.querySelector('.users-list__table-currency');
+    // const exchangeRateName = contractor.querySelector('.users-list__table-currency');
     const contractorExchangeRate = contractor.querySelector('.users-list__table-exchangerate');
     const contractorCashLimit = contractor.querySelector('.users-list__table-cashlimit');
     const contractorPaymentList = contractor.querySelector('.users-list__badges-list');
@@ -23,7 +23,7 @@ const renderBuyersTableRows = (array) => {
     contractorName.textContent = userName;
     console.log(userName);
 
-    exchangeRateName.textContent = 'RUB';
+    // exchangeRateName.textContent = 'RUB';
     contractorExchangeRate.textContent = `${exchangeRate.toFixed(2)} ₽`;
     // contractorExchangeRate.textContent = `${parseFloat((1 / parseFloat(exchangeRate)).toFixed(2))} ₽`;
     console.log(exchangeRate);
@@ -59,7 +59,7 @@ const renderBuyers = (data) => {
       evt.preventDefault();
       const element = data.find((item) => item.id === elementId.dataset.contractorId);
       console.log(`element: ${element}, elementID: ${element.id}`);
-      openModalSell(element);
+      // openModalSell(element);
     });
   });
 };
