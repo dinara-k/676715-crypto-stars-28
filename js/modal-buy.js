@@ -317,7 +317,7 @@ const checkExchangeRubInKeks = (sellerData, buyerData) => {
 
     // рабочий вариант
     // paymentExchangeAllButton.addEventListener('click', () => {
-    //   changePaymentField();
+    //   // changePaymentField();
     //   // debugger;
     //   balances.forEach(({currency, amount}) => {
     //     if (currency === 'RUB') {
@@ -553,7 +553,7 @@ const closeModalBuy = () => {
   contractorVerified.style.display = 'block';
   document.removeEventListener('keydown', onDocumentKeydown);
   modalBuyContainer.removeEventListener('click', onClickOutside);
-  paymentExchangeAllButton.addEventListener('click', changePaymentField);
+  // paymentExchangeAllButton.addEventListener('click', changePaymentField);
 };
 
 function onDocumentKeydown (evt) {

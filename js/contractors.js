@@ -100,21 +100,15 @@
 import {renderSellers} from './render-sellers.js';
 import {renderBuyers} from './render-buyers.js';
 
-// const LIST_CONTENTS = [
-//   {
-//     id: 'list-sellers',
-//     function: 'renderSellers'
-//   },
-//   {
-//     id: 'list-buyers',
-//     function: 'renderBuyers'
-//   }
-// ];
-
 // const usersTable = document.querySelector('.users-list__table');
 const buySellTabsContainer = document.querySelector('.tabs--toggle-buy-sell');
 const buySellTabsButtons = buySellTabsContainer.querySelectorAll('.tabs__control');
+// const buySellTabsButton = buySellTabsContainer.querySelector('.tabs__control');
 const tableBodyContainer = document.querySelector('.users-list__table-body');
+const verifiedUsersToggle = document.querySelector('.users-nav__custom-toggle input');
+
+let activeTableListId;
+let activeVerifiedUsersToggle;
 
 // const renderSellersTableRows = (array) => {
 //   const tableBodyContainer = document.querySelector('.users-list__table-body');
@@ -250,16 +244,86 @@ const tableBodyContainer = document.querySelector('.users-list__table-body');
 const createLists = (data) => {
   const sellers = data.filter((seller) => seller.status === 'seller');
   // console.log(`sellers.length: ${sellers.length}, sellers: ${sellers}`);
+  console.log(`sellers.length: ${sellers.length}`);
 
   const buyers = data.filter((buyer) => buyer.status === 'buyer');
   // console.log(`buyers.length: ${buyers.length}, buyers: ${buyers}`);
 
-  // function activatebuySellTabs () {
-  //   buySellTabsButtons.forEach((button) => button.classList.toggle('is-active'));
-  // }
-
+  // Отображение списка "Купить" (по умолчанию)
   renderSellers(sellers);
+  activeTableListId = 'list-sellers';
 
+  // // Переключение списка "Купить" / "Продать" - рабочий вариант (оригинал)!!!
+  // buySellTabsContainer.onclick = (evt) => {
+  //   const id = evt.target.dataset.id;
+
+  //   if (id) {
+  //     buySellTabsButtons.forEach((button) => {
+  //       button.classList.remove('is-active');
+  //     });
+  //     evt.target.classList.add('is-active');
+  //   }
+
+  //   if (id === 'list-sellers') {
+  //     tableBodyContainer.innerHTML = '';
+  //     renderSellers(sellers);
+  //     // if (activeVerifiedUsersToggle === 0) {
+  //     //   renderSellers(sellers);
+  //     // } else {
+  //     //   onVerifiedUsersToggle();
+  //     // }
+  //     // activeTableListId = 'list-sellers';
+  //     // console.log(`activeTableListId: ${activeTableListId}`);
+  //     // console.log(`activeVerifiedUsersToggle: ${activeVerifiedUsersToggle}`);
+  //   } else if (id === 'list-buyers') {
+  //     tableBodyContainer.innerHTML = '';
+  //     renderBuyers(buyers);
+  //     // if (activeVerifiedUsersToggle === 0) {
+  //     //   renderBuyers(buyers);
+  //     // } else {
+  //     //   onVerifiedUsersToggle();
+  //     // }
+  //     // activeTableListId = 'list-buyers';
+  //     // console.log(`activeTableListId: ${activeTableListId}`);
+  //     // console.log(`activeVerifiedUsersToggle: ${activeVerifiedUsersToggle}`);
+  //   }
+  // };
+
+  // Переключение списка "Купить" / "Продать" - дополненный сырой вариант
+  // buySellTabsContainer.onclick = (evt) => {
+  //   const id = evt.target.dataset.id;
+
+  //   if (id) {
+  //     buySellTabsButtons.forEach((button) => {
+  //       button.classList.remove('is-active');
+  //     });
+  //     evt.target.classList.add('is-active');
+  //   }
+
+  //   if (id === 'list-sellers') {
+  //     tableBodyContainer.innerHTML = '';
+  //     if (activeVerifiedUsersToggle === 0) {
+  //       renderSellers(sellers);
+  //     } else {
+  //       onVerifiedUsersToggle();
+  //     }
+  //     activeTableListId = 'list-sellers';
+  //     console.log(`activeTableListId: ${activeTableListId}`);
+  //     console.log(`activeVerifiedUsersToggle: ${activeVerifiedUsersToggle}`);
+  //   } else if (id === 'list-buyers') {
+  //     tableBodyContainer.innerHTML = '';
+  //     if (activeVerifiedUsersToggle === 0) {
+  //       renderBuyers(buyers);
+  //     } else {
+  //       onVerifiedUsersToggle();
+  //     }
+  //     activeTableListId = 'list-buyers';
+  //     console.log(`activeTableListId: ${activeTableListId}`);
+  //     console.log(`activeVerifiedUsersToggle: ${activeVerifiedUsersToggle}`);
+  //   }
+  // };
+
+  // Переключение списка "Купить" / "Продать" - вариант 2 оригинал
   buySellTabsContainer.onclick = (evt) => {
     const id = evt.target.dataset.id;
 
@@ -269,23 +333,165 @@ const createLists = (data) => {
       });
       evt.target.classList.add('is-active');
     }
-    // for (let i = 0; i < buySellTabsButtons.length; i++) {
 
-    // }
     if (id === 'list-sellers') {
       tableBodyContainer.innerHTML = '';
       renderSellers(sellers);
+      activeTableListId = 'list-sellers';
+      if (activeVerifiedUsersToggle === 0) {
+        renderSellers(sellers);
+      } else {
+        onVerifiedUsersToggle();
+      }
+      // activeTableListId = 'list-sellers';
+      // console.log(`activeTableListId: ${activeTableListId}`);
+      // console.log(`activeVerifiedUsersToggle: ${activeVerifiedUsersToggle}`);
     } else if (id === 'list-buyers') {
       tableBodyContainer.innerHTML = '';
-      renderBuyers(buyers);
+      // renderBuyers(buyers);
+      activeTableListId = 'list-buyers';
+      if (activeVerifiedUsersToggle === 1) {
+        onVerifiedUsersToggle();
+      } else {
+        renderBuyers(buyers);
+      }
+      // activeTableListId = 'list-buyers';
+      // console.log(`activeTableListId: ${activeTableListId}`);
+      // console.log(`activeVerifiedUsersToggle: ${activeVerifiedUsersToggle}`);
     }
-    // const element = document.getElementById(id);
-    // element.classList.add('is-active');
   };
 
-  // ! здесь
-  // renderSellers(sellers);
-  // renderBuyers(buyers);
+  let verifiedSellers;
+  // const getverifiedSellers = () => verifiedSellers = sellers.filter((seller) => seller.isVerified === true);
+  function getVerifiedSellers () {
+    verifiedSellers = sellers.filter((seller) => seller.isVerified === true);
+    // activeTableListId = 'list-sellers';
+    return verifiedSellers;
+  }
+
+  let verifiedBuyers;
+  function getVerifiedBuyers () {
+    verifiedBuyers = buyers.filter((buyer) => buyer.isVerified === true);
+    // activeTableListId = 'list-buyers';
+    return verifiedBuyers;
+  }
+
+  // // console.log(`verifiedSellers.length: ${verifiedSellers.length}`);
+
+  // // const verifiedBuyers = buyers.filter((buyer) => buyer.isVerified === true);
+  // // console.log(`verifiedBuyers.length: ${verifiedBuyers.length}`);
+
+  // const onVerifiedUsersToggle = () => {
+  function onVerifiedUsersToggle () {
+    // const verifiedSellers = sellers.filter((seller) => seller.isVerified === true);
+    // // console.log(`verifiedSellers.length: ${verifiedSellers.length}`);
+
+    // const verifiedBuyers = buyers.filter((buyer) => buyer.isVerified === true);
+    // // console.log(`verifiedBuyers.length: ${verifiedBuyers.length}`);
+
+    // рабочий вариант только с одной влкдакой?
+    // if (verifiedUsersToggle.checked) {
+    //   if (activeTableListId === 'list-buyers') {
+    //     tableBodyContainer.innerHTML = '';
+    //     renderBuyers(verifiedBuyers);
+    //     console.log('print verified Buyers');
+    //   } else if (!activeTableListId) {
+    //     tableBodyContainer.innerHTML = '';
+    //     renderSellers(verifiedSellers);
+    //     console.log('print verified Sellers');
+    //   }
+    // else {
+    //   tableBodyContainer.innerHTML = '';
+    //   renderSellers(sellers);
+    //   console.log('print all Sellers');
+    // }
+    // }
+
+    // if (((verifiedUsersToggle.checked) && (activeTableListId)) || ((verifiedUsersToggle.checked) && (activeTableListId === 'list-sellers'))) {
+    // // if (((verifiedUsersToggle.checked) && (activeTableListId === 'list-sellers'))) {
+    //   tableBodyContainer.innerHTML = '';
+    //   // renderSellers(verifiedSellers);
+    //   renderSellers(getVerifiedSellers());
+    //   activeVerifiedUsersToggle = 1;
+    //   console.log('print verified Sellers');
+    //   console.log(`verifiedSellers.length: ${verifiedSellers.length}`);
+    // } else {
+    //   tableBodyContainer.innerHTML = '';
+    //   renderSellers(sellers);
+    //   activeVerifiedUsersToggle = 0;
+    //   console.log('print all Sellers');
+    //   console.log(`Sellers.length: ${sellers.length}`);
+    // }
+
+    // if ((verifiedUsersToggle.checked) && (activeTableListId === 'list-buyers')) {
+    //   tableBodyContainer.innerHTML = '';
+    //   // renderBuyers(verifiedBuyers);
+    //   renderBuyers(getVerifiedBuyers());
+    //   activeVerifiedUsersToggle = 1;
+    //   console.log('print verified Buyers');
+    //   console.log(`verifiedBuyers.length: ${verifiedBuyers.length}`);
+    // } else {
+    //   tableBodyContainer.innerHTML = '';
+    //   renderBuyers(buyers);
+    //   activeVerifiedUsersToggle = 0;
+    //   console.log('print all Buyers');
+    //   console.log(`Buyers.length: ${buyers.length}`);
+    // }
+
+    // полурабочий вариант
+    // if (((verifiedUsersToggle.checked) && (!activeTableListId)) || ((verifiedUsersToggle.checked) && (activeTableListId === 'list-sellers'))) {
+    if (((verifiedUsersToggle.checked) && (activeTableListId === 'list-sellers'))) {
+      tableBodyContainer.innerHTML = '';
+      // renderSellers(verifiedSellers);
+      renderSellers(getVerifiedSellers());
+      activeVerifiedUsersToggle = 1;
+      // console.log('print verified Sellers');
+      // console.log(`verifiedSellers.length: ${verifiedSellers.length}`);
+    // } else if ((activeTableListId === 'list-sellers') || (!activeTableListId)) {
+    } else if ((verifiedUsersToggle.checked === false) && (activeTableListId === 'list-sellers')) {
+      tableBodyContainer.innerHTML = '';
+      renderSellers(sellers);
+      activeVerifiedUsersToggle = 0;
+      // console.log('print all Sellers');
+      // console.log(`Sellers.length: ${sellers.length}`);
+    }
+
+    if ((verifiedUsersToggle.checked) && (activeTableListId === 'list-buyers')) {
+      tableBodyContainer.innerHTML = '';
+      // renderBuyers(verifiedBuyers);
+      renderBuyers(getVerifiedBuyers());
+      activeVerifiedUsersToggle = 1;
+      // console.log('print verified Buyers');
+      // console.log(`verifiedBuyers.length: ${verifiedBuyers.length}`);
+    // } else if ((activeTableListId === 'list-buyers')) {
+    // } else if ((verifiedUsersToggle.checked === 'false') && (activeTableListId === 'list-buyers')) {
+    } else if ((verifiedUsersToggle.checked === false) && (activeTableListId === 'list-buyers')) {
+      tableBodyContainer.innerHTML = '';
+      renderBuyers(buyers);
+      activeVerifiedUsersToggle = 0;
+      // console.log('print all Buyers');
+      // console.log(`Buyers.length: ${buyers.length}`);
+    }
+  }
+
+  // Активация чекбокса "Только проверенные пользователи"
+  verifiedUsersToggle.addEventListener('change', onVerifiedUsersToggle);
+  // // if (justVerifiedUsersToggle.checked) {
+  // //   tableBodyContainer.innerHTML = '';
+  // //   const verifiedSellers = sellers.filter((seller) => seller.isVerified === true);
+  // //   console.log(`verifiedSellers.length: ${verifiedSellers.length}`);
+  // // }
+  // // justVerifiedUsersToggle.checked = (evt) => {
+  // //   tableBodyContainer.innerHTML = '';
+  // //   const verifiedSellers = sellers.filter((seller) => seller.isVerified === true);
+  // //   console.log(`verifiedSellers.length: ${verifiedSellers.length}`);
+  // // };
+
+  // // renderSellers(sellers);
+  // // renderBuyers(buyers);
+
+  // // Активация чекбокса "Только проверенные пользователи"
+  // verifiedUsersToggle.addEventListener('change', onVerifiedUsersToggle);
 };
 
 export {createLists};
