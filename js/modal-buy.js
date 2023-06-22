@@ -89,7 +89,7 @@ const setContractorData = ({id, isVerified, userName, exchangeRate, minAmount, b
           numberCard = accountNumber;
         }
       });
-      console.log(`numberCard: ${numberCard}`);
+      // console.log(`numberCard: ${numberCard}`);
       return numberCard;
     }
   };
@@ -216,15 +216,15 @@ const checkExchangeRubInKeks = (sellerData, buyerData) => {
   const {exchangeRate, minAmount, balance} = sellerData;
   const {balances} = buyerData;
   // const exchangeRate = parseFloat(exchangeRate);
-  console.log(`exchangeRate type: ${typeof(exchangeRate)}`);
+  // console.log(`exchangeRate type: ${typeof(exchangeRate)}`);
   // console.log(`exchangeRate type: ${typeof(exchangeRate)}`);
 
   // const minAmountNumber = parseFloat(minAmount);
-  console.log(`minAmount type: ${typeof(minAmount)}`);
+  // console.log(`minAmount type: ${typeof(minAmount)}`);
   // console.log(`minAmountNumber type: ${typeof(minAmountNumber)}`);
 
   // const balanceAmountNumber = parseFloat(balance.amount);
-  console.log(`balance.amount type: ${typeof(balance.amount)}`);
+  // console.log(`balance.amount type: ${typeof(balance.amount)}`);
   // console.log(`balanceAmountNumber type: ${typeof(balanceAmountNumber)}`);
 
   // не работает Pristine
@@ -232,18 +232,18 @@ const checkExchangeRubInKeks = (sellerData, buyerData) => {
   // const receivingFieldNumber = parseFloat(receivingField.value);
 
   paymentMinAmount = minAmount;
-  console.log(`paymentMinAmount type: ${typeof(paymentMinAmount)}`);
+  // console.log(`paymentMinAmount type: ${typeof(paymentMinAmount)}`);
 
   paymentMaxAmount = parseFloat((balance.amount * exchangeRate).toFixed(2));
   // console.log(`balanceAmountNumber type: ${typeof(balanceAmountNumber)}, exchangeRate type: ${typeof(exchangeRate)}, paymentMaxAmount type: ${typeof(paymentMaxAmount)}, paymentMaxAmount value: ${paymentMaxAmount}`);
-  console.log(`paymentMaxAmount: type: ${typeof(paymentMaxAmount)}`);
+  // console.log(`paymentMaxAmount: type: ${typeof(paymentMaxAmount)}`);
 
   receivingMinAmount = parseFloat((paymentMinAmount / exchangeRate).toFixed(2));
-  console.log(`receivingMinAmount: type: ${typeof(receivingMinAmount)}`);
+  // console.log(`receivingMinAmount: type: ${typeof(receivingMinAmount)}`);
   // console.log(`paymentMinAmount type: ${typeof(paymentMinAmount)}, exchangeRate type: ${typeof(exchangeRate)}, receivingMinAmount type: ${typeof(receivingMinAmount)}`);
 
   receivingMaxAmount = balance.amount;
-  console.log(`receivingMaxAmount type: ${typeof(receivingMaxAmount)}`);
+  // console.log(`receivingMaxAmount type: ${typeof(receivingMaxAmount)}`);
 
   let buyerRubBalance;
   let sellerKeksBalance;
@@ -352,12 +352,12 @@ const checkExchangeRubInKeks = (sellerData, buyerData) => {
   const validatePaymentField = () => ((paymentMinAmount <= parseFloat(paymentField.value)) && (parseFloat(paymentField.value) <= paymentMaxAmount));
   // {
 
-    // return ((paymentMinAmount <= paymentFieldNumber) && (paymentFieldNumber <= paymentMaxAmount));
-    // console.log(`(paymentMinAmount <= parseFloat(paymentField.value)) && (parseFloat(paymentField.value) <= paymentMaxAmount): ${((paymentMinAmount <= parseFloat(paymentField.value)) && (parseFloat(paymentField.value) <= paymentMaxAmount))}`);
-    // return ((paymentMinAmount <= parseFloat(paymentField.value)) && (parseFloat(paymentField.value) <= paymentMaxAmount));
+  // return ((paymentMinAmount <= paymentFieldNumber) && (paymentFieldNumber <= paymentMaxAmount));
+  // console.log(`(paymentMinAmount <= parseFloat(paymentField.value)) && (parseFloat(paymentField.value) <= paymentMaxAmount): ${((paymentMinAmount <= parseFloat(paymentField.value)) && (parseFloat(paymentField.value) <= paymentMaxAmount))}`);
+  // return ((paymentMinAmount <= parseFloat(paymentField.value)) && (parseFloat(paymentField.value) <= paymentMaxAmount));
 
-    // console.log(`(paymentMinAmount <= paymentFieldNumber) && (paymentFieldNumber <= paymentMaxAmount): ${((paymentMinAmount <= paymentFieldNumber) && (paymentFieldNumber <= paymentMaxAmount))}`);
-    // return ((paymentMinAmount <= paymentFieldNumber) && (paymentFieldNumber <= paymentMaxAmount));
+  // console.log(`(paymentMinAmount <= paymentFieldNumber) && (paymentFieldNumber <= paymentMaxAmount): ${((paymentMinAmount <= paymentFieldNumber) && (paymentFieldNumber <= paymentMaxAmount))}`);
+  // return ((paymentMinAmount <= paymentFieldNumber) && (paymentFieldNumber <= paymentMaxAmount));
 
 
   // if (paymentMinAmount <= paymentField.value) {
@@ -418,13 +418,13 @@ const checkExchangeRubInKeks = (sellerData, buyerData) => {
 
   // Pristine - функция валидации инпута "Зачисление"
   //рабочи вариант - последнийй
-  // const validateReceivingField = () => ((receivingMinAmount <= parseFloat(receivingField.value)) && (parseFloat(receivingField.value) <= receivingMaxAmount));
+  const validateReceivingField = () => ((receivingMinAmount <= parseFloat(receivingField.value)) && (parseFloat(receivingField.value) <= receivingMaxAmount));
 
-  const validateReceivingField = () =>
-  {
-    console.log((receivingMinAmount <= parseFloat(receivingField.value)) && (parseFloat(receivingField.value) <= receivingMaxAmount));
-    return ((receivingMinAmount <= parseFloat(receivingField.value)) && (parseFloat(receivingField.value) <= receivingMaxAmount));
-  };
+  // const validateReceivingField = () =>
+  // {
+  //   // console.log((receivingMinAmount <= parseFloat(receivingField.value)) && (parseFloat(receivingField.value) <= receivingMaxAmount));
+  //   return ((receivingMinAmount <= parseFloat(receivingField.value)) && (parseFloat(receivingField.value) <= receivingMaxAmount));
+  // };
 
   //не работает
   // const validateReceivingField = () =>

@@ -62,6 +62,7 @@ const renderSellers = (data) => {
   // отслеживание клика на кнопку "Обменять"
   exchangeBuyButtons.forEach((button) => {
     button.addEventListener('click', (evt) => {
+      // clickButton (evt);
       const elementId = evt.target.closest('[data-contractor-id]');
       evt.preventDefault();
       const element = data.find((item) => item.id === elementId.dataset.contractorId);
@@ -69,6 +70,14 @@ const renderSellers = (data) => {
       openModalBuy(element);
     });
   });
+
+  // function clickButton (evt) {
+  //   const elementId = evt.target.closest('[data-contractor-id]');
+  //   evt.preventDefault();
+  //   const element = data.find((item) => item.id === elementId.dataset.contractorId);
+  //   // console.log(`element: ${element}, elementID: ${element.id}`);
+  //   openModalBuy(element);
+  // };
 };
 
 export {renderSellers};
